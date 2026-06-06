@@ -4,6 +4,72 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Para Você ♥</title>
+<style>html { display: none; }</style>
+<script>
+    (function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const pswd = urlParams.get('pswd');
+        if (pswd === '052026') {
+            document.documentElement.style.display = 'block';
+            return;
+        }
+        const typed = prompt('Por favor, insira a senha para acessar o site: 🔒');
+        if (typed === '052026') {
+            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?pswd=052026';
+            window.history.replaceState({ path: newUrl }, '', newUrl);
+            document.documentElement.style.display = 'block';
+            return;
+        }
+        document.documentElement.innerHTML = `
+            <head>
+                <title>Acesso Protegido 🔒</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body {
+                        background-color: #121212;
+                        color: white;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        font-family: sans-serif;
+                        text-align: center;
+                        margin: 0;
+                        padding: 20px;
+                        box-sizing: border-box;
+                    }
+                    .box {
+                        background: #1e1e1e;
+                        border: 1px solid #333;
+                        padding: 30px;
+                        border-radius: 16px;
+                        max-width: 320px;
+                        width: 100%;
+                    }
+                    button {
+                        background: white;
+                        color: black;
+                        border: none;
+                        padding: 12px 24px;
+                        border-radius: 20px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        margin-top: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="box">
+                    <h1 style="font-size: 2rem; margin-bottom: 15px;">🔒 Acesso Protegido</h1>
+                    <p style="color: #888;">Senha incorreta ou ausente. Por favor, tente novamente.</p>
+                    <button onclick="location.reload()">Inserir Senha</button>
+                </div>
+            </body>
+        `;
+        document.documentElement.style.display = 'block';
+        window.stop();
+    })();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
