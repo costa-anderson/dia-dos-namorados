@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Para Você ♥</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --rose:#c1485a;--rose-light:#e8809a;--rose-pale:#f5c0c0;
+  --dark:#120808;--dark2:#1c0b0b;--dark3:#2a1010;--dark4:#3d1a1a;
+  --cream:#f5e6d3;--muted:#a07070;--faint:#7a5050;
+}
+html,body{height:100%;overflow:hidden;background:var(--dark)}
+
+/* SNAP CONTAINER */
+.app{
+  width:100%;max-width:430px;margin:0 auto;
+  height:100vh;height:100dvh;
+  overflow-y:scroll;scroll-snap-type:y mandatory;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+}
+.app::-webkit-scrollbar{display:none}
+
+/* SECTIONS */
+.screen{
+  width:100%;height:100vh;height:100dvh;
+  scroll-snap-align:start;scroll-snap-stop:always;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  padding:0 24px;
+  text-align:center;
+}
+
+/* PROGRESS DOTS */
+.dots{
+  position:fixed;right:14px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:7px;z-index:100;
+}
+.dt{
+  width:6px;height:6px;border-radius:50%;background:#3d1a1a;
+  transition:all .4s;cursor:pointer;
+}
+.dt.on{background:var(--rose-light);height:18px;border-radius:3px}
+
+/* TYPOGRAPHY */
+.eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+h1,h2{font-family:'Cormorant Garamond',serif;font-weight:300;color:var(--rose-pale);line-height:1.2}
+h1{font-size:48px}
+h1 em{font-style:italic;color:var(--rose-light)}
+h2{font-size:32px;margin-bottom:20px}
+.body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.8;color:var(--muted);font-weight:300}
+
+/* SCROLL HINT */
+.hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px}
+.hint span{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--faint)}
+.hint-arr{width:1px;height:28px;background:linear-gradient(to bottom,var(--faint),transparent);animation:grow .8s ease-in-out infinite alternate}
+@keyframes grow{from{height:16px}to{height:28px}}
+
+/* BG DECO */
+.bg-circle{position:absolute;border-radius:50%;opacity:.07;pointer-events:none}
+
+/* ─── SCREEN 1: HERO ─── */
+.s1{background:var(--dark)}
+.s1-hearts{font-size:18px;letter-spacing:14px;color:var(--rose);animation:hb 2.2s ease-in-out infinite;margin-bottom:24px}
+@keyframes hb{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.2);opacity:1}}
+.s1 h1{font-size:52px;margin-bottom:12px}
+.s1-date{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--faint);margin-top:16px}
+.s1 .bg-circle:nth-child(1){width:260px;height:260px;background:var(--rose);top:-80px;right:-80px}
+.s1 .bg-circle:nth-child(2){width:180px;height:180px;background:var(--rose-light);bottom:-60px;left:-60px}
+
+/* ─── SCREEN 2: CARTA ─── */
+.s2{background:var(--dark2)}
+.letter{
+  background:var(--dark3);border:1px solid var(--dark4);
+  border-radius:20px;padding:28px 22px;text-align:left;
+  position:relative;overflow:hidden;width:100%;max-width:360px;
+}
+.letter::before{
+  content:'"';position:absolute;top:6px;left:16px;
+  font-family:'Cormorant Garamond',serif;font-size:90px;
+  color:var(--dark4);line-height:1;
+}
+.letter .body{position:relative;z-index:1;padding-top:22px;font-size:14px}
+.letter-sign{margin-top:18px;text-align:right;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--rose-light)}
+
+/* ─── SCREEN 3: NOSSA HISTÓRIA (POLAROIDES) ─── */
+.s3{background:var(--dark);justify-content:flex-start;padding-top:0}
+.s3-inner{width:100%;height:100%;overflow-y:auto;padding:40px 20px 60px;scroll-snap-type:none}
+.s3-inner::-webkit-scrollbar{display:none}
+.s3 h2{font-size:28px;text-align:center;margin-bottom:28px;flex-shrink:0}
+.pol-row{display:flex;align-items:center;margin-bottom:32px;gap:0}
+.pol-row.left{flex-direction:row}
+.pol-row.right{flex-direction:row-reverse}
+.polaroid{
+  background:#f8f0e8;padding:12px 12px 36px;
+  box-shadow:0 8px 28px rgba(0,0,0,.5);
+  flex-shrink:0;width:150px;
+  position:relative;
+}
+.pol-row.left .polaroid{transform:rotate(-3deg)}
+.pol-row.right .polaroid{transform:rotate(3deg)}
+.pol-img{width:100%;aspect-ratio:1;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:36px}
+.pol-cap{font-family:'DM Sans',sans-serif;font-size:11px;color:#555;text-align:center;margin-top:10px;font-style:italic}
+.pol-text{flex:1;padding:0 16px}
+.pol-text .tdate{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+.pol-text .ttitle{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--rose-pale);margin-bottom:6px}
+.pol-text .tdesc{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);line-height:1.6;font-weight:300}
+
+/* ─── SCREEN 4: CONTAGEM ─── */
+.s4{background:var(--dark2)}
+.cd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:320px;margin-bottom:16px}
+.cd-box{background:var(--dark3);border:1px solid var(--dark4);border-radius:16px;padding:22px 8px;text-align:center}
+.cd-num{font-family:'Cormorant Garamond',serif;font-size:42px;color:var(--rose-light);line-height:1;margin-bottom:5px}
+.cd-lbl{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--faint)}
+.cd-msg{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--faint);font-style:italic;letter-spacing:1px}
+
+/* ─── SCREEN 5: RAZÕES ─── */
+.s5{background:var(--dark)}
+.reasons{display:flex;flex-direction:column;gap:10px;width:100%;max-width:360px}
+.reason{
+  display:flex;align-items:center;gap:14px;
+  background:var(--dark3);border:1px solid var(--dark4);
+  border-radius:14px;padding:14px 16px;text-align:left;
+}
+.reason-n{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--rose);line-height:1;flex-shrink:0;width:28px}
+.reason-t{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);line-height:1.5;font-weight:300}
+
+/* ─── SCREEN 6: JOGO ─── */
+.s6{background:var(--dark2)}
+.game-wrap{width:100%;max-width:340px}
+.game-wrap h2{font-size:26px;margin-bottom:6px}
+.game-sub{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--faint);margin-bottom:20px;letter-spacing:1px}
+.grid{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.grow{display:flex;gap:6px;justify-content:center}
+.gcell{
+  width:48px;height:48px;border:1px solid var(--dark4);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;
+  color:var(--cream);background:var(--dark3);
+  transition:all .3s;text-transform:uppercase;
+}
+.gcell.correct{background:#2a5a2a;border-color:#4a8a4a;color:#a0e0a0}
+.gcell.present{background:#5a4a10;border-color:#8a7020;color:#e0c060}
+.gcell.absent{background:#2a1a1a;border-color:#3a2a2a;color:#604040}
+.gcell.active{border-color:var(--rose);animation:pop .15s ease}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.gcell.shake{animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.keyboard{display:flex;flex-direction:column;gap:6px;align-items:center}
+.krow{display:flex;gap:5px}
+.key{
+  min-width:30px;height:44px;padding:0 6px;
+  background:var(--dark3);border:1px solid var(--dark4);
+  border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;
+  color:var(--cream);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;font-weight:500;
+}
+.key:active{transform:scale(.92)}
+.key.wide{min-width:48px;font-size:10px}
+.key.correct{background:#2a5a2a;border-color:#4a8a4a;color:#a0e0a0}
+.key.present{background:#5a4a10;border-color:#8a7020;color:#e0c060}
+.key.absent{background:#1a1010;border-color:#2a1a1a;color:#604040}
+.gmsg{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--rose-light);text-align:center;min-height:20px;margin-bottom:10px;font-style:italic}
+.greset{background:transparent;border:1px solid var(--dark4);border-radius:10px;padding:8px 20px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--faint);cursor:pointer;letter-spacing:1px;transition:all .2s;display:none}
+.greset:active{transform:scale(.95)}
+
+/* ─── SCREEN 7: PROMESSAS ─── */
+.s7{background:var(--dark)}
+.promises{display:flex;flex-direction:column;gap:0;width:100%;max-width:360px}
+.promise{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:16px 0;border-bottom:1px solid var(--dark3);
+  text-align:left;
+}
+.promise-icon{color:var(--rose);font-size:16px;flex-shrink:0;margin-top:2px}
+.promise-t{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--muted);line-height:1.6;font-weight:300}
+
+/* ─── SCREEN 8: FINAL ─── */
+.s8{background:var(--dark2)}
+.s8-heart{font-size:64px;animation:hb 2s ease-in-out infinite;display:block;margin-bottom:24px}
+.s8 h1{font-size:38px;margin-bottom:12px}
+.s8-tag{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--faint);margin-top:20px}
+.s8 .bg-circle:nth-child(1){width:300px;height:300px;background:var(--rose);top:50%;left:50%;transform:translate(-50%,-50%)}
+</style>
+</head>
+<body>
+
+<div class="dots" id="dots"></div>
+
+<div class="app" id="app">
+
+  <!-- 1. HERO -->
+  <div class="screen s1">
+    <div class="bg-circle"></div>
+    <div class="bg-circle"></div>
+    <div class="s1-hearts">♥ ♥ ♥</div>
+    <h1>Para você,<br><em>meu amor</em></h1>
+    <div class="s1-date">12 de junho · dia dos namorados</div>
+    <div class="hint"><span>deslize</span><div class="hint-arr"></div></div>
+  </div>
+
+  <!-- 2. CARTA -->
+  <div class="screen s2">
+    <div class="eyebrow">I · carta de amor</div>
+    <div class="letter">
+      <div class="body">
+        Meu amor,<br><br>
+        Você é a parte mais bonita da minha rotina. O motivo pelo qual sorrio sem perceber, o pensamento que aparece no meio do dia, a pessoa que faz tudo fazer sentido.<br><br>
+        Obrigado(a) por ser exatamente quem você é — imperfeito(a), real, meu(minha).
+      </div>
+      <div class="letter-sign">Com todo meu amor ♥</div>
+    </div>
+  </div>
+
+  <!-- 3. HISTÓRIA -->
+  <div class="screen s3">
+    <div class="s3-inner">
+      <p class="eyebrow" style="text-align:center;padding-top:40px">II · nossa história</p>
+      <h2>Os momentos que guardo</h2>
+      <div class="pol-row left">
+        <div class="polaroid"><div class="pol-img">📸</div><div class="pol-cap">o início</div></div>
+        <div class="pol-text"><div class="tdate">O começo</div><div class="ttitle">Quando tudo começou</div><div class="tdesc">Uma conversa, um sorriso, e nunca mais foi igual.</div></div>
+      </div>
+      <div class="pol-row right">
+        <div class="polaroid"><div class="pol-img">🌷</div><div class="pol-cap">primeiro encontro</div></div>
+        <div class="pol-text"><div class="tdate">O primeiro</div><div class="ttitle">Nosso primeiro encontro</div><div class="tdesc">O nervosismo, a certeza de que tinha algo especial ali.</div></div>
+      </div>
+      <div class="pol-row left">
+        <div class="polaroid"><div class="pol-img">✨</div><div class="pol-cap">a virada</div></div>
+        <div class="pol-text"><div class="tdate">A virada</div><div class="ttitle">Quando eu soube</div><div class="tdesc">Olhei pra você e pensei: é essa pessoa.</div></div>
+      </div>
+      <div class="pol-row right">
+        <div class="polaroid"><div class="pol-img">♥</div><div class="pol-cap">hoje</div></div>
+        <div class="pol-text"><div class="tdate">Hoje</div><div class="ttitle">O que vem pela frente</div><div class="tdesc">Cada dia do nosso jeito. Mas juntos.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. CONTAGEM -->
+  <div class="screen s4">
+    <div class="eyebrow">III · contagem</div>
+    <h2>Juntos há...</h2>
+    <div class="cd-grid">
+      <div class="cd-box"><div class="cd-num" id="cd-d">0</div><div class="cd-lbl">Dias</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-h">0</div><div class="cd-lbl">Horas</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-m">0</div><div class="cd-lbl">Minutos</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-s">0</div><div class="cd-lbl">Segundos</div></div>
+    </div>
+    <p class="cd-msg">desde o dia em que tudo mudou ♥</p>
+  </div>
+
+  <!-- 5. RAZÕES -->
+  <div class="screen s5">
+    <div class="eyebrow">IV · por que te amo</div>
+    <h2>Razões infinitas</h2>
+    <div class="reasons">
+      <div class="reason"><div class="reason-n">01</div><div class="reason-t">Pelo seu jeito de olhar pra mim como se eu fosse o mundo</div></div>
+      <div class="reason"><div class="reason-n">02</div><div class="reason-t">Pela forma como você ri — aquele riso que não tem como não contagiar</div></div>
+      <div class="reason"><div class="reason-n">03</div><div class="reason-t">Por me aceitar do jeito que sou, com todos os defeitos</div></div>
+      <div class="reason"><div class="reason-n">04</div><div class="reason-t">Pelo seu abraço que faz tudo parecer menos difícil</div></div>
+      <div class="reason"><div class="reason-n">05</div><div class="reason-t">Por fazer do cotidiano um lugar mais bonito</div></div>
+      <div class="reason"><div class="reason-n">06</div><div class="reason-t">Por existir e cruzar o meu caminho</div></div>
+    </div>
+  </div>
+
+  <!-- 6. JOGO -->
+  <div class="screen s6">
+    <div class="game-wrap">
+      <div class="eyebrow">V · joguinho do amor</div>
+      <h2>Descubra a palavra</h2>
+      <p class="game-sub">5 tentativas · 5 letras · tema: amor</p>
+      <div class="grid" id="grid"></div>
+      <div class="gmsg" id="gmsg"></div>
+      <button class="greset" id="greset" onclick="resetGame()">jogar de novo</button>
+      <div class="keyboard" id="kb"></div>
+    </div>
+  </div>
+
+  <!-- 7. PROMESSAS -->
+  <div class="screen s7">
+    <div class="eyebrow">VI · promessas</div>
+    <h2>O que prometo pra você</h2>
+    <div class="promises">
+      <div class="promise"><div class="promise-icon">♡</div><div class="promise-t">Estar do seu lado nos dias difíceis, não só nos bonitos</div></div>
+      <div class="promise"><div class="promise-icon">♡</div><div class="promise-t">Te fazer rir sempre que eu puder, mesmo quando não for fácil</div></div>
+      <div class="promise"><div class="promise-icon">♡</div><div class="promise-t">Te escolher todo dia, de novo e de novo</div></div>
+      <div class="promise"><div class="promise-icon">♡</div><div class="promise-t">Nunca deixar o amor virar rotina sem graça</div></div>
+      <div class="promise"><div class="promise-icon">♡</div><div class="promise-t">Crescer com você e apoiar cada sonho seu</div></div>
+      <div class="promise"><div class="promise-icon">♡</div><div class="promise-t">Amar você de um jeito que faça sentido pra você</div></div>
+    </div>
+  </div>
+
+  <!-- 8. FINAL -->
+  <div class="screen s8">
+    <div class="bg-circle"></div>
+    <div style="position:relative;z-index:1">
+      <span class="s8-heart">♥</span>
+      <h1>Feliz Dia<br><em>dos Namorados</em></h1>
+      <p class="body" style="margin-top:12px">feito com amor · só para você</p>
+      <p class="s8-tag">para sempre</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// DOTS
+const SCREENS = 8;
+const dotsEl = document.getElementById('dots');
+const app = document.getElementById('app');
+for(let i=0;i<SCREENS;i++){
+  const d=document.createElement('div');
+  d.className='dt'+(i===0?' on':'');
+  d.onclick=()=>scrollTo(i);
+  dotsEl.appendChild(d);
+}
+function scrollTo(i){
+  const screens=document.querySelectorAll('.screen');
+  screens[i].scrollIntoView({behavior:'smooth'});
+}
+const allDots=()=>document.querySelectorAll('.dt');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const screens=[...document.querySelectorAll('.screen')];
+      const i=screens.indexOf(e.target);
+      allDots().forEach((d,j)=>d.classList.toggle('on',i===j));
+    }
+  });
+},{threshold:.5});
+document.querySelectorAll('.screen').forEach(s=>observer.observe(s));
+
+// COUNTDOWN
+const start=new Date('2025-06-12T00:00:00');
+function upd(){
+  const n=new Date(),df=Math.max(0,n-start);
+  document.getElementById('cd-d').textContent=Math.floor(df/86400000);
+  document.getElementById('cd-h').textContent=Math.floor((df%86400000)/3600000);
+  document.getElementById('cd-m').textContent=Math.floor((df%3600000)/60000);
+  document.getElementById('cd-s').textContent=Math.floor((df%60000)/1000);
+}
+upd();setInterval(upd,1000);
+
+// GAME
+const WORDS=['BEIJO','AMADO','JURAS','LAÇOS','PAIXO','UNIDO','DOCES','ROSAS','CARIS','SONHO'];
+const ROWS=5,COLS=5;
+let secret,board,cur,gameOver;
+
+function initGame(){
+  secret=WORDS[Math.floor(Math.random()*WORDS.length)];
+  board=Array.from({length:ROWS},()=>Array(COLS).fill(''));
+  cur={row:0,col:0};
+  gameOver=false;
+  renderGrid();
+  renderKB();
+  document.getElementById('gmsg').textContent='';
+  document.getElementById('greset').style.display='none';
+}
+
+function renderGrid(){
+  const g=document.getElementById('grid');
+  g.innerHTML='';
+  for(let r=0;r<ROWS;r++){
+    const row=document.createElement('div');row.className='grow';
+    for(let c=0;c<COLS;c++){
+      const cell=document.createElement('div');
+      cell.className='gcell';
+      cell.id=`c${r}${c}`;
+      cell.textContent=board[r][c];
+      if(r<cur.row){
+        const res=checkRow(r);
+        cell.classList.add(res[c]);
+      } else if(r===cur.row&&c<cur.col){
+        // typing
+      }
+      row.appendChild(cell);
+    }
+    g.appendChild(row);
+  }
+}
+
+function checkRow(r){
+  const guess=board[r].join('');
+  const res=Array(COLS).fill('absent');
+  const sArr=secret.split('');
+  const used=Array(COLS).fill(false);
+  // correct
+  for(let c=0;c<COLS;c++){if(guess[c]===secret[c]){res[c]='correct';used[c]=true;}}
+  // present
+  for(let c=0;c<COLS;c++){
+    if(res[c]==='correct')continue;
+    for(let s=0;s<COLS;s++){
+      if(!used[s]&&guess[c]===secret[s]){res[c]='present';used[s]=true;break;}
+    }
+  }
+  return res;
+}
+
+const KB_ROWS=[
+  ['Q','W','E','R','T','Y','U','I','O','P'],
+  ['A','S','D','F','G','H','J','K','L'],
+  ['↵','Z','X','C','V','B','N','M','⌫']
+];
+
+function renderKB(){
+  const kb=document.getElementById('kb');
+  kb.innerHTML='';
+  const states={};
+  for(let r=0;r<cur.row;r++){
+    const res=checkRow(r);
+    for(let c=0;c<COLS;c++){
+      const l=board[r][c];
+      const s=res[c];
+      if(!states[l]||s==='correct'||(s==='present'&&states[l]==='absent'))states[l]=s;
+    }
+  }
+  KB_ROWS.forEach(row=>{
+    const rowEl=document.createElement('div');rowEl.className='krow';
+    row.forEach(k=>{
+      const btn=document.createElement('button');
+      btn.className='key'+(k==='↵'||k==='⌫'?' wide':'');
+      btn.textContent=k;
+      if(states[k])btn.classList.add(states[k]);
+      btn.onclick=()=>press(k);
+      rowEl.appendChild(btn);
+    });
+    kb.appendChild(rowEl);
+  });
+}
+
+function press(k){
+  if(gameOver)return;
+  if(k==='⌫'){
+    if(cur.col>0){cur.col--;board[cur.row][cur.col]='';updateCell(cur.row,cur.col,'');}
+    return;
+  }
+  if(k==='↵'){
+    submit();return;
+  }
+  if(cur.col<COLS){
+    board[cur.row][cur.col]=k;
+    updateCell(cur.row,cur.col,k,'active');
+    cur.col++;
+  }
+}
+
+function updateCell(r,c,ch,extra=''){
+  const el=document.getElementById(`c${r}${c}`);
+  if(!el)return;
+  el.textContent=ch;
+  el.className='gcell'+(extra?' '+extra:'');
+  if(extra==='active'){setTimeout(()=>el.classList.remove('active'),150);}
+}
+
+function submit(){
+  if(cur.col<COLS){shakeCurRow();return;}
+  const guess=board[cur.row].join('');
+  const res=checkRow(cur.row);
+  // animate reveal
+  for(let c=0;c<COLS;c++){
+    setTimeout(()=>{
+      const el=document.getElementById(`c${cur.row}${c}`);
+      if(el){el.className='gcell '+res[c];}
+    },c*120);
+  }
+  setTimeout(()=>{
+    const won=guess===secret;
+    if(won){
+      document.getElementById('gmsg').textContent='Você acertou! ♥';
+      gameOver=true;
+      document.getElementById('greset').style.display='block';
+    } else {
+      cur.row++;cur.col=0;
+      if(cur.row>=ROWS){
+        document.getElementById('gmsg').textContent=`Era: ${secret}`;
+        gameOver=true;
+        document.getElementById('greset').style.display='block';
+      }
+    }
+    renderKB();
+  },COLS*120+200);
+}
+
+function shakeCurRow(){
+  for(let c=0;c<COLS;c++){
+    const el=document.getElementById(`c${cur.row}${c}`);
+    if(el){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),400);}
+  }
+}
+
+function resetGame(){initGame();}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Backspace'){press('⌫');return;}
+  if(e.key==='Enter'){press('↵');return;}
+  const l=e.key.toUpperCase();
+  if(/^[A-Z]$/.test(l))press(l);
+});
+
+initGame();
+</script>
+</body>
+</html>
