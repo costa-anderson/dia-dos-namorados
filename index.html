@@ -19,6 +19,14 @@
                 document.documentElement.style.display = 'block';
                 return;
             }
+            const typed = prompt('Por favor, insira a senha para acessar o painel: 🔒');
+            if (typed === '052026') {
+                // Modifica a URL para incluir a senha sem recarregar, permitindo refresh da página sem prompt
+                const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?pswd=052026';
+                window.history.replaceState({ path: newUrl }, '', newUrl);
+                document.documentElement.style.display = 'block';
+                return;
+            }
             document.documentElement.innerHTML = `
                 <head>
                     <title>Acesso Protegido 🔒</title>
@@ -57,13 +65,29 @@
                             color: #a07070;
                             font-size: 1rem;
                             line-height: 1.6;
+                            margin-bottom: 25px;
+                        }
+                        button {
+                            background: #c1485a;
+                            color: white;
+                            border: none;
+                            padding: 12px 24px;
+                            border-radius: 20px;
+                            font-weight: bold;
+                            cursor: pointer;
+                            margin-top: 20px;
+                            transition: all 0.3s ease;
+                        }
+                        button:hover {
+                            background: #e8809a;
                         }
                     </style>
                 </head>
                 <body>
                     <div class="box">
                         <h1>Acesso Negado 🔒</h1>
-                        <p>Esta página é privada. Use o link de acesso correto contendo a senha.</p>
+                        <p>Esta página é privada. Use a senha de acesso correta para visualizar os modelos e o editor.</p>
+                        <button onclick="location.reload()">Tentar Novamente</button>
                     </div>
                 </body>
             `;
