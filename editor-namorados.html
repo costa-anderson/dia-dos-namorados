@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Editor · Site do Amor</title>
+<style>html { display: none; }</style>
+<script>
+    (function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const pswd = urlParams.get('pswd');
+        if (pswd === '052026') {
+            document.documentElement.style.display = 'block';
+            return;
+        }
+        document.documentElement.innerHTML = `
+            <head>
+                <title>Acesso Protegido 🔒</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body {
+                        background-color: #121212;
+                        color: white;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        font-family: sans-serif;
+                        text-align: center;
+                        margin: 0;
+                        padding: 20px;
+                        box-sizing: border-box;
+                    }
+                    .box {
+                        background: #1e1e1e;
+                        border: 1px solid #333;
+                        padding: 30px;
+                        border-radius: 16px;
+                        max-width: 320px;
+                        width: 100%;
+                    }
+                    p {
+                        color: #888;
+                        font-size: 1rem;
+                        line-height: 1.6;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="box">
+                    <h1 style="font-size: 2rem; margin-bottom: 15px;">Acesso Negado 🔒</h1>
+                    <p>Esta página é privada. Use o link de acesso correto contendo a senha.</p>
+                </div>
+            </body>
+        `;
+        document.documentElement.style.display = 'block';
+        window.stop();
+    })();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --acc:#c1485a;--acc-l:#e8809a;--acc-p:#f5c0c0;
+  --bg:#0e0707;--bg2:#1c0b0b;--bg3:#261010;--bg4:#3d1a1a;
+  --cream:#f5e6d3;--muted:#a07070;--faint:#6a4040;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--cream);font-family:'DM Sans',sans-serif}
+
+.editor{max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:110px}
+
+/* HEADER */
+.header{
+  background:linear-gradient(160deg,color-mix(in srgb,var(--acc) 30%,#000),var(--bg));
+  padding:32px 24px 22px;text-align:center;
+  border-bottom:1px solid var(--bg4);
+}
+.header-hearts{font-size:16px;letter-spacing:10px;color:var(--acc);animation:hb 2s infinite;margin-bottom:10px}
+@keyframes hb{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.header h1{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--acc-p)}
+.header h1 em{font-style:italic;color:var(--acc-l)}
+.header p{font-size:10px;color:var(--faint);letter-spacing:2px;text-transform:uppercase;margin-top:5px}
+
+/* STICKY TABS */
+.tabs-wrap{position:sticky;top:0;z-index:50;background:var(--bg2);border-bottom:1px solid var(--bg4)}
+.tabs{display:flex;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex-shrink:0;padding:13px 15px;font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--faint);cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;
+}
+.tab.active{color:var(--acc-l);border-bottom-color:var(--acc-l)}
+
+/* PANELS */
+.panel{display:none;padding:22px 18px;animation:fadein .2s ease}
+.panel.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+.stitle{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--faint);margin-bottom:18px}
+.stitle::after{content:'';flex:1;height:1px;background:var(--bg4)}
+
+/* FIELDS */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+.field input,.field textarea,.field select{
+  width:100%;background:var(--bg3);border:1px solid var(--bg4);
+  border-radius:12px;padding:12px 14px;color:var(--cream);
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;
+  transition:border-color .2s;outline:none;resize:none;-webkit-appearance:none;
+}
+.field input[type=date]{color-scheme:dark}
+.field input:focus,.field textarea:focus{border-color:var(--acc)}
+.field textarea{min-height:90px;line-height:1.6}
+.hint-txt{font-size:11px;color:var(--faint);margin-top:5px;font-style:italic}
+
+/* COLOR */
+.color-row{display:flex;align-items:center;gap:12px}
+.color-picker{width:52px;height:52px;border-radius:12px;border:2px solid var(--bg4);padding:4px;cursor:pointer;background:var(--bg3)}
+.color-swatches{flex:1;display:flex;gap:6px}
+.swatch{flex:1;height:52px;border-radius:10px;transition:background .25s;cursor:pointer;position:relative;border:2px solid transparent}
+.swatch.selected{border-color:#fff}
+.swatch-label{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:9px;color:rgba(255,255,255,.6);letter-spacing:1px}
+
+/* MOMENTS */
+.moments{display:flex;flex-direction:column;gap:12px}
+.moment-card{background:var(--bg3);border:1px solid var(--bg4);border-radius:16px;padding:16px;position:relative}
+.mc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.mc-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--acc-l)}
+.mc-del{background:none;border:none;color:var(--faint);cursor:pointer;font-size:20px;padding:2px 8px;transition:color .2s;line-height:1}
+.mc-del:hover{color:var(--acc)}
+.mc-img-area{
+  width:100%;aspect-ratio:1;background:var(--bg4);border-radius:12px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;cursor:pointer;border:2px dashed var(--bg4);transition:border-color .2s;
+  overflow:hidden;position:relative;margin-bottom:12px;
+}
+.mc-img-area:hover{border-color:var(--acc)}
+.mc-img-area img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:1}
+.mc-img-placeholder{display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
+.mc-img-icon{font-size:28px;opacity:.45}
+.mc-img-txt{font-size:11px;color:var(--faint);letter-spacing:1px}
+.mc-file-input{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2}
+.mc-fields{display:flex;flex-direction:column;gap:8px}
+.mc-fields input{
+  width:100%;background:var(--bg4);border:1px solid #4d2222;
+  border-radius:10px;padding:10px 13px;color:var(--cream);
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;
+  outline:none;transition:border-color .2s;-webkit-appearance:none;
+}
+.mc-fields input:focus{border-color:var(--acc)}
+.add-btn{
+  width:100%;padding:13px;background:transparent;border:1px dashed var(--bg4);
+  border-radius:14px;color:var(--faint);font-family:'DM Sans',sans-serif;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;
+  transition:all .2s;margin-top:4px;
+}
+.add-btn:hover{border-color:var(--acc);color:var(--acc-l)}
+
+/* LIST ITEMS */
+.list-items{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.list-item{display:flex;align-items:center;gap:8px}
+.list-item input{
+  flex:1;background:var(--bg3);border:1px solid var(--bg4);
+  border-radius:10px;padding:11px 13px;color:var(--cream);
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;outline:none;
+  transition:border-color .2s;-webkit-appearance:none;
+}
+.list-item input:focus{border-color:var(--acc)}
+.list-del{background:none;border:none;color:var(--faint);cursor:pointer;font-size:20px;padding:4px;transition:color .2s;flex-shrink:0;line-height:1}
+.list-del:hover{color:var(--acc)}
+
+/* GEN BAR */
+.gen-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:linear-gradient(to top,var(--bg) 65%,transparent);
+  padding:14px 18px 26px;z-index:100;
+}
+.gen-bar-inner{max-width:480px;margin:0 auto}
+.gen-btn{
+  width:100%;padding:16px;background:var(--acc);border:none;border-radius:16px;
+  color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;cursor:pointer;
+  transition:all .2s;box-shadow:0 8px 24px rgba(0,0,0,.4);
+}
+.gen-btn:active{transform:scale(.97)}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal-box{background:var(--bg2);border:1px solid var(--bg4);border-radius:20px;padding:28px 22px;text-align:center;max-width:320px;width:100%}
+.modal-box h3{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--acc-p);margin-bottom:10px}
+.modal-box p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+.modal-btns{display:flex;flex-direction:column;gap:10px}
+.modal-dl{padding:14px;background:var(--acc);border:none;border-radius:12px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.modal-dl:active{transform:scale(.97)}
+.modal-close{padding:12px;background:transparent;border:1px solid var(--bg4);border-radius:12px;color:var(--faint);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="editor">
+  <div class="header">
+    <div class="header-hearts">♥ ♥ ♥</div>
+    <h1>Site do <em>Amor</em></h1>
+    <p>personalize · gere · compartilhe</p>
+  </div>
+
+  <div class="tabs-wrap">
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab(0)">Estilo</div>
+      <div class="tab" onclick="switchTab(1)">Intro</div>
+      <div class="tab" onclick="switchTab(2)">Momentos</div>
+      <div class="tab" onclick="switchTab(3)">Tempo</div>
+      <div class="tab" onclick="switchTab(4)">Por que amo</div>
+      <div class="tab" onclick="switchTab(5)">Promessas</div>
+    </div>
+  </div>
+
+  <!-- PANEL 0: ESTILO -->
+  <div class="panel active" id="panel-0">
+    <div class="stitle">aparência do site</div>
+    <div class="field">
+      <label>Cor principal</label>
+      <div class="color-row">
+        <input type="color" class="color-picker" id="accent-color" value="#c1485a" oninput="onColorChange(this.value)">
+        <div class="color-swatches" id="swatches">
+          <div class="swatch selected" id="sw-main" title="Principal"><span class="swatch-label">principal</span></div>
+          <div class="swatch" id="sw-light" title="Claro"><span class="swatch-label">claro</span></div>
+          <div class="swatch" id="sw-pale" title="Suave"><span class="swatch-label">suave</span></div>
+        </div>
+      </div>
+      <p class="hint-txt">Escolha a cor principal — o fundo e os tons são gerados automaticamente</p>
+    </div>
+    <div class="field">
+      <label>Nome de quem recebe</label>
+      <input type="text" id="recipient" placeholder="ex: meu amor, Ju, Rafa..." maxlength="30">
+    </div>
+    <div class="field">
+      <label>Quem assina</label>
+      <input type="text" id="sender" placeholder="ex: seu amor, Ana, Pedro..." maxlength="30">
+    </div>
+    <div class="field">
+      <label>Senha de acesso (opcional)</label>
+      <input type="text" id="pswd" placeholder="deixe vazio para sem senha" value="052026" maxlength="20">
+      <p class="hint-txt">Se preenchida, só quem tiver o link com ?pswd=SENHA consegue ver</p>
+    </div>
+  </div>
+
+  <!-- PANEL 1: INTRO -->
+  <div class="panel" id="panel-1">
+    <div class="stitle">carta de amor</div>
+    <div class="field">
+      <label>Texto da carta</label>
+      <textarea id="carta" rows="8">Meu amor,
+
+Você é a parte mais bonita da minha rotina. O motivo pelo qual sorrio sem perceber, o pensamento que aparece no meio do dia, a pessoa que faz tudo fazer sentido.
+
+Obrigado(a) por ser exatamente quem você é — imperfeito(a), real, meu(minha).</textarea>
+    </div>
+  </div>
+
+  <!-- PANEL 2: MOMENTOS -->
+  <div class="panel" id="panel-2">
+    <div class="stitle">nossa história · polaroides</div>
+    <div class="moments" id="moments-list"></div>
+    <button class="add-btn" onclick="addMoment()">+ adicionar momento</button>
+  </div>
+
+  <!-- PANEL 3: TEMPO -->
+  <div class="panel" id="panel-3">
+    <div class="stitle">contagem juntos</div>
+    <div class="field">
+      <label>Data que começaram a namorar</label>
+      <input type="date" id="start-date" value="2025-06-12">
+      <p class="hint-txt">O site mostrará dias, horas, minutos e segundos juntos em tempo real</p>
+    </div>
+    <div class="field">
+      <label>Frase embaixo do contador</label>
+      <input type="text" id="cd-msg" value="desde o dia em que tudo mudou ♥" maxlength="60">
+    </div>
+  </div>
+
+  <!-- PANEL 4: RAZÕES -->
+  <div class="panel" id="panel-4">
+    <div class="stitle">por que te amo</div>
+    <div class="list-items" id="reasons-list"></div>
+    <button class="add-btn" onclick="addReason()">+ adicionar razão</button>
+  </div>
+
+  <!-- PANEL 5: PROMESSAS -->
+  <div class="panel" id="panel-5">
+    <div class="stitle">minhas promessas</div>
+    <div class="list-items" id="promises-list"></div>
+    <button class="add-btn" onclick="addPromise()">+ adicionar promessa</button>
+  </div>
+</div>
+
+<div class="gen-bar">
+  <div class="gen-bar-inner">
+    <button class="gen-btn" onclick="generate()">✦ Gerar Site do Amor</button>
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h3>Site pronto! ♥</h3>
+    <p>Seu site personalizado foi gerado com as suas cores e informações. Baixe e envie para o seu amor!</p>
+    <div class="modal-btns">
+      <button class="modal-dl" onclick="downloadSite()">⬇ Baixar site</button>
+      <button class="modal-close" onclick="closeModal()">continuar editando</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── TABS ──
+function switchTab(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('active',i===j));
+}
+
+// ── COLOR SYSTEM ──
+// Derives a full palette from one hex: bg (very dark), bg2, bg3, bg4, main, light, pale
+let currentAccent='#c1485a';
+
+function hexToHsl(hex){
+  let r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255;
+  const max=Math.max(r,g,b),min=Math.min(r,g,b);
+  let h,s,l=(max+min)/2;
+  if(max===min){h=s=0;}else{
+    const d=max-min;s=l>.5?d/(2-max-min):d/(max+min);
+    switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;break;}
+    h/=6;
+  }
+  return[Math.round(h*360),Math.round(s*100),Math.round(l*100)];
+}
+
+function hslToHex(h,s,l){
+  s/=100;l/=100;
+  const a=s*Math.min(l,1-l);
+  const f=n=>{const k=(n+h/30)%12;const color=l-a*Math.max(Math.min(k-3,9-k,1),-1);return Math.round(255*color).toString(16).padStart(2,'0')};
+  return '#'+f(0)+f(8)+f(4);
+}
+
+function buildPalette(hex){
+  const [h,s,l]=hexToHsl(hex);
+  return {
+    acc: hex,
+    accL: hslToHex(h, Math.min(s+10,100), Math.min(l+20,90)),
+    accP: hslToHex(h, Math.min(s+5,100),  Math.min(l+38,94)),
+    bg:  hslToHex(h, Math.min(s+10,60),   Math.max(l-38,4)),
+    bg2: hslToHex(h, Math.min(s+8,55),    Math.max(l-30,7)),
+    bg3: hslToHex(h, Math.min(s+5,50),    Math.max(l-22,10)),
+    bg4: hslToHex(h, Math.min(s+2,45),    Math.max(l-12,16)),
+    faint: hslToHex(h, Math.min(s,40),    Math.max(l-10,25)),
+    muted: hslToHex(h, Math.min(s-5,30),  Math.max(l+5, 50)),
+  };
+}
+
+function applyPaletteToEditor(p){
+  const r=document.documentElement.style;
+  r.setProperty('--acc',  p.acc);
+  r.setProperty('--acc-l',p.accL);
+  r.setProperty('--acc-p',p.accP);
+  r.setProperty('--bg',   p.bg);
+  r.setProperty('--bg2',  p.bg2);
+  r.setProperty('--bg3',  p.bg3);
+  r.setProperty('--bg4',  p.bg4);
+  r.setProperty('--faint',p.faint);
+  r.setProperty('--muted',p.muted);
+  // update swatch colors
+  document.getElementById('sw-main').style.background=p.acc;
+  document.getElementById('sw-light').style.background=p.accL;
+  document.getElementById('sw-pale').style.background=p.accP;
+}
+
+function onColorChange(hex){
+  currentAccent=hex;
+  const p=buildPalette(hex);
+  applyPaletteToEditor(p);
+}
+
+// init swatches
+onColorChange('#c1485a');
+
+// ── MOMENTS ──
+let moments=[];
+let momentCounter=0;
+
+function addMoment(data={}){
+  const id=++momentCounter;
+  moments.push({id, imgSrc:'', date:'', title:'', desc:'', caption:'', ...data});
+  renderMoments();
+}
+
+function removeMoment(id){
+  moments=moments.filter(m=>m.id!==id);
+  renderMoments();
+}
+
+function renderMoments(){
+  const list=document.getElementById('moments-list');
+  list.innerHTML='';
+  moments.forEach((m,i)=>{
+    const card=document.createElement('div');
+    card.className='moment-card';
+    card.innerHTML=`
+      <div class="mc-head">
+        <span class="mc-label">Momento ${i+1}</span>
+        <button class="mc-del" onclick="removeMoment(${m.id})">×</button>
+      </div>
+      <div class="mc-img-area" id="imgarea-${m.id}">
+        <div class="mc-img-placeholder" id="placeholder-${m.id}" style="${m.imgSrc?'display:none':''}">
+          <span class="mc-img-icon">📸</span>
+          <span class="mc-img-txt">toque para adicionar foto</span>
+        </div>
+        ${m.imgSrc?`<img src="${m.imgSrc}" id="imgpreview-${m.id}">`:'<span id="imgpreview-'+m.id+'" style="display:none"></span>'}
+        <input type="file" accept="image/*" class="mc-file-input" id="fileinput-${m.id}">
+      </div>
+      <div class="mc-fields">
+        <input type="text" placeholder="Data / período (ex: Junho 2024)" value="${esc(m.date)}" oninput="setMoment(${m.id},'date',this.value)" maxlength="30">
+        <input type="text" placeholder="Título (ex: Nosso primeiro beijo)" value="${esc(m.title)}" oninput="setMoment(${m.id},'title',this.value)" maxlength="50">
+        <input type="text" placeholder="Descrição curta" value="${esc(m.desc)}" oninput="setMoment(${m.id},'desc',this.value)" maxlength="120">
+        <input type="text" placeholder="Legenda da polaroid (ex: o início)" value="${esc(m.caption)}" oninput="setMoment(${m.id},'caption',this.value)" maxlength="30">
+      </div>`;
+    list.appendChild(card);
+
+    // attach file listener after DOM insert
+    const fileInput=card.querySelector(`#fileinput-${m.id}`);
+    fileInput.addEventListener('change', function(){
+      const file=this.files[0];
+      if(!file)return;
+      const reader=new FileReader();
+      reader.onload=ev=>{
+        const src=ev.target.result;
+        setMoment(m.id,'imgSrc',src);
+        // update UI without full re-render
+        const ph=document.getElementById('placeholder-'+m.id);
+        if(ph)ph.style.display='none';
+        let img=document.getElementById('imgpreview-'+m.id);
+        if(img && img.tagName==='SPAN'){
+          const newImg=document.createElement('img');
+          newImg.id='imgpreview-'+m.id;
+          newImg.src=src;
+          newImg.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:1';
+          img.replaceWith(newImg);
+        } else if(img){
+          img.src=src;
+          img.style.display='block';
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+}
+
+function setMoment(id,key,val){
+  const m=moments.find(m=>m.id===id);
+  if(m)m[key]=val;
+}
+
+// ── REASONS ──
+let reasons=[], rCount=0;
+function addReason(val=''){reasons.push({id:++rCount,val});renderReasons();}
+function removeReason(id){reasons=reasons.filter(r=>r.id!==id);renderReasons();}
+function setReason(id,val){const r=reasons.find(r=>r.id===id);if(r)r.val=val;}
+function renderReasons(){
+  const list=document.getElementById('reasons-list');list.innerHTML='';
+  reasons.forEach((r,i)=>{
+    const div=document.createElement('div');div.className='list-item';
+    div.innerHTML=`<input type="text" placeholder="Razão ${i+1}..." value="${esc(r.val)}" oninput="setReason(${r.id},this.value)" maxlength="100"><button class="list-del" onclick="removeReason(${r.id})">×</button>`;
+    list.appendChild(div);
+  });
+}
+
+// ── PROMISES ──
+let promises=[], pCount=0;
+function addPromise(val=''){promises.push({id:++pCount,val});renderPromises();}
+function removePromise(id){promises=promises.filter(p=>p.id!==id);renderPromises();}
+function setPromise(id,val){const p=promises.find(p=>p.id===id);if(p)p.val=val;}
+function renderPromises(){
+  const list=document.getElementById('promises-list');list.innerHTML='';
+  promises.forEach((p,i)=>{
+    const div=document.createElement('div');div.className='list-item';
+    div.innerHTML=`<input type="text" placeholder="Promessa ${i+1}..." value="${esc(p.val)}" oninput="setPromise(${p.id},this.value)" maxlength="120"><button class="list-del" onclick="removePromise(${p.id})">×</button>`;
+    list.appendChild(div);
+  });
+}
+
+function esc(s){return String(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// ── DEFAULTS ──
+addMoment({date:'O começo',title:'Quando tudo começou',desc:'Uma conversa, um sorriso, e nunca mais foi igual.',caption:'o início'});
+addMoment({date:'O primeiro',title:'Nosso primeiro encontro',desc:'O nervosismo, a certeza de que tinha algo especial.',caption:'primeiro encontro'});
+
+addReason('Pelo seu jeito de olhar pra mim como se eu fosse o mundo');
+addReason('Pela forma como você ri — aquele riso que não tem como não contagiar');
+addReason('Por me aceitar do jeito que sou, com todos os defeitos');
+addReason('Pelo seu abraço que faz tudo parecer menos difícil');
+addReason('Por fazer do cotidiano um lugar mais bonito');
+addReason('Por existir e cruzar o meu caminho');
+
+addPromise('Estar do seu lado nos dias difíceis, não só nos bonitos');
+addPromise('Te fazer rir sempre que eu puder');
+addPromise('Te escolher todo dia, de novo e de novo');
+addPromise('Nunca deixar o amor virar rotina sem graça');
+addPromise('Crescer com você e apoiar cada sonho seu');
+
+// ── GENERATE ──
+let generatedHTML='';
+
+function generate(){
+  const p=buildPalette(currentAccent);
+  const recipient=document.getElementById('recipient').value||'meu amor';
+  const sender=document.getElementById('sender').value||'Com todo meu amor';
+  const carta=document.getElementById('carta').value||'';
+  const startDate=document.getElementById('start-date').value||'2025-06-12';
+  const cdMsg=document.getElementById('cd-msg').value||'desde o dia em que tudo mudou ♥';
+  const pswd=document.getElementById('pswd').value||'';
+
+  const cartaHTML=carta.split('\n').map(l=>l.trim()?escH(l):'<br>').join('<br>');
+
+  const momentsHTML=moments.map((m,i)=>{
+    const side=i%2===0?'left':'right';
+    const defaultEmoji=['📸','🌷','✨','♥'][i]||'♥';
+    const imgContent=m.imgSrc
+      ?`<img src="${m.imgSrc}" style="width:100%;height:100%;object-fit:cover;display:block;">`
+      :`<span style="font-size:36px">${defaultEmoji}</span>`;
+    return `<div class="pol-row ${side}">
+  <div class="polaroid"><div class="pol-img">${imgContent}</div><div class="pol-cap">${escH(m.caption)}</div></div>
+  <div class="pol-text"><div class="tdate">${escH(m.date)}</div><div class="ttitle">${escH(m.title)}</div><div class="tdesc">${escH(m.desc)}</div></div>
+</div>`;
+  }).join('');
+
+  const reasonsHTML=reasons.filter(r=>r.val.trim()).map((r,i)=>`
+<div class="reason"><div class="reason-n">0${i+1}</div><div class="reason-t">${escH(r.val)}</div></div>`).join('');
+
+  const promisesHTML=promises.filter(p=>p.val.trim()).map(p=>`
+<div class="promise"><div class="promise-icon">♡</div><div class="promise-t">${escH(p.val)}</div></div>`).join('');
+
+  generatedHTML=buildSiteHTML({p,recipient,sender,cartaHTML,momentsHTML,reasonsHTML,promisesHTML,startDate,cdMsg,pswd});
+  document.getElementById('modal').classList.add('open');
+}
+
+function escH(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function buildSiteHTML({p,recipient,sender,cartaHTML,momentsHTML,reasonsHTML,promisesHTML,startDate,cdMsg,pswd}){
+  const pswdGuard=pswd?`<script>
+(function(){
+  const p=new URLSearchParams(window.location.search).get('pswd');
+  if(p==='${pswd.replace(/'/g,"\\'")}'){document.documentElement.style.display='block';return;}
+  document.documentElement.innerHTML=\`<head><title>Acesso Protegido 🔒</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{background:#121212;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;text-align:center;margin:0;padding:20px;box-sizing:border-box}.box{background:#1e1e1e;border:1px solid #333;padding:30px;border-radius:16px;max-width:320px;width:100%}p{color:#888;font-size:1rem;line-height:1.6}</style></head><body><div class="box"><h1 style="font-size:2rem;margin-bottom:15px">Acesso Negado 🔒</h1><p>Esta página é privada. Use o link de acesso correto contendo a senha.</p></div></body>\`;
+  document.documentElement.style.display='block';window.stop();
+})();
+<\/script>`:'';
+
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Para ${escH(recipient)} ♥</title>
+${pswd?`<style>html{display:none}</style>`:''}
+${pswdGuard}
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --rose:${p.acc};--rose-l:${p.accL};--rose-p:${p.accP};
+  --bg:${p.bg};--bg2:${p.bg2};--bg3:${p.bg3};--bg4:${p.bg4};
+  --cream:#f5e6d3;--muted:${p.muted};--faint:${p.faint};
+}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+.app{width:100%;max-width:430px;margin:0 auto;height:100vh;height:100dvh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.app::-webkit-scrollbar{display:none}
+.screen{width:100%;height:100vh;height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:0 24px;text-align:center}
+.dots{position:fixed;right:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:7px;z-index:100}
+.dt{width:6px;height:6px;border-radius:50%;background:var(--bg4);transition:all .4s;cursor:pointer}
+.dt.on{background:var(--rose-l);height:18px;border-radius:3px}
+.eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+h1,h2{font-family:'Cormorant Garamond',serif;font-weight:300;color:var(--rose-p);line-height:1.2}
+h1{font-size:48px}h1 em{font-style:italic;color:var(--rose-l)}h2{font-size:32px;margin-bottom:20px}
+.body-txt{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.8;color:var(--muted);font-weight:300}
+.hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px}
+.hint span{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--faint)}
+.hint-arr{width:1px;height:28px;background:linear-gradient(to bottom,var(--faint),transparent);animation:grow .8s ease-in-out infinite alternate}
+@keyframes grow{from{height:16px}to{height:28px}}
+@keyframes hb{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.bg-c{position:absolute;border-radius:50%;opacity:.08;pointer-events:none}
+/* HERO */
+.s1{background:var(--bg)}
+.s1-hearts{font-size:18px;letter-spacing:14px;color:var(--rose);animation:hb 2.2s ease-in-out infinite;margin-bottom:24px}
+.s1 h1{font-size:50px;margin-bottom:12px}
+.s1-date{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--faint);margin-top:16px}
+.s1 .bg-c:nth-child(1){width:260px;height:260px;background:var(--rose);top:-80px;right:-80px}
+.s1 .bg-c:nth-child(2){width:180px;height:180px;background:var(--rose-l);bottom:-60px;left:-60px}
+/* CARTA */
+.s2{background:var(--bg2)}
+.letter{background:var(--bg3);border:1px solid var(--bg4);border-radius:20px;padding:28px 22px;text-align:left;position:relative;overflow:hidden;width:100%;max-width:360px}
+.letter::before{content:'"';position:absolute;top:6px;left:16px;font-family:'Cormorant Garamond',serif;font-size:90px;color:var(--bg4);line-height:1}
+.letter-body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.9;color:var(--muted);font-weight:300;position:relative;z-index:1;padding-top:22px}
+.letter-sign{margin-top:18px;text-align:right;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--rose-l)}
+/* HISTÓRIA */
+.s3{background:var(--bg);justify-content:flex-start;padding:0}
+.s3-inner{width:100%;height:100%;overflow-y:auto;padding:40px 20px 60px}
+.s3-inner::-webkit-scrollbar{display:none}
+.s3 h2{font-size:28px;text-align:center;margin-bottom:28px}
+.pol-row{display:flex;align-items:center;margin-bottom:32px}
+.pol-row.left{flex-direction:row}.pol-row.right{flex-direction:row-reverse}
+.polaroid{background:#f8f0e8;padding:12px 12px 36px;box-shadow:0 8px 28px rgba(0,0,0,.55);flex-shrink:0;width:148px;position:relative}
+.pol-row.left .polaroid{transform:rotate(-3deg)}.pol-row.right .polaroid{transform:rotate(3deg)}
+.pol-img{width:100%;aspect-ratio:1;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:36px;overflow:hidden}
+.pol-cap{font-family:'DM Sans',sans-serif;font-size:11px;color:#555;text-align:center;margin-top:10px;font-style:italic}
+.pol-text{flex:1;padding:0 14px}
+.tdate{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--faint);margin-bottom:5px}
+.ttitle{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--rose-p);margin-bottom:5px}
+.tdesc{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);line-height:1.6;font-weight:300}
+/* CONTAGEM */
+.s4{background:var(--bg2)}
+.cd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:320px;margin-bottom:16px}
+.cd-box{background:var(--bg3);border:1px solid var(--bg4);border-radius:16px;padding:22px 8px;text-align:center}
+.cd-num{font-family:'Cormorant Garamond',serif;font-size:42px;color:var(--rose-l);line-height:1;margin-bottom:5px}
+.cd-lbl{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--faint)}
+.cd-msg{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--faint);font-style:italic;letter-spacing:1px}
+/* RAZÕES */
+.s5{background:var(--bg)}
+.reasons{display:flex;flex-direction:column;gap:9px;width:100%;max-width:360px}
+.reason{display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--bg4);border-radius:14px;padding:13px 16px;text-align:left}
+.reason-n{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--rose);line-height:1;flex-shrink:0;width:28px}
+.reason-t{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);line-height:1.5;font-weight:300}
+/* JOGO */
+.s6{background:var(--bg2)}
+.game-wrap{width:100%;max-width:340px}
+.game-wrap h2{font-size:26px;margin-bottom:6px}
+.game-sub{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--faint);margin-bottom:18px;letter-spacing:1px}
+.gg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.grow{display:flex;gap:5px;justify-content:center}
+.gcell{width:46px;height:46px;border:1px solid var(--bg4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);background:var(--bg3);transition:all .3s;text-transform:uppercase}
+.gcell.correct{background:#1e4a1e;border-color:#3a7a3a;color:#8eda8e}
+.gcell.present{background:#4a3a0a;border-color:#7a6010;color:#d4b050}
+.gcell.absent{background:#1e1010;border-color:#2e1818;color:#5a3a3a}
+.gcell.active{border-color:var(--rose)}
+.gcell.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.keyboard{display:flex;flex-direction:column;gap:5px;align-items:center}
+.krow{display:flex;gap:4px}
+.key{min-width:29px;height:42px;padding:0 5px;background:var(--bg3);border:1px solid var(--bg4);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--cream);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-weight:500}
+.key:active{transform:scale(.9)}.key.wide{min-width:46px;font-size:9px}
+.key.correct{background:#1e4a1e;border-color:#3a7a3a;color:#8eda8e}
+.key.present{background:#4a3a0a;border-color:#7a6010;color:#d4b050}
+.key.absent{background:#180e0e;border-color:#281818;color:#5a3a3a}
+.gmsg{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--rose-l);text-align:center;min-height:18px;margin-bottom:8px;font-style:italic}
+.greset{background:transparent;border:1px solid var(--bg4);border-radius:10px;padding:7px 18px;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--faint);cursor:pointer;letter-spacing:1px;display:none}
+/* PROMESSAS */
+.s7{background:var(--bg)}
+.promises{display:flex;flex-direction:column;width:100%;max-width:360px}
+.promise{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--bg3);text-align:left}
+.promise-icon{color:var(--rose);font-size:15px;flex-shrink:0;margin-top:2px}
+.promise-t{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--muted);line-height:1.6;font-weight:300}
+/* FINAL */
+.s8{background:var(--bg2)}
+.s8-heart{font-size:60px;animation:hb 2s ease-in-out infinite;display:block;margin-bottom:22px}
+.s8 h1{font-size:36px;margin-bottom:12px}
+.s8-tag{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--faint);margin-top:18px}
+.s8 .bg-c{width:300px;height:300px;background:var(--rose);top:50%;left:50%;transform:translate(-50%,-50%)}
+</style>
+</head>
+<body>
+<div class="dots" id="dots"></div>
+<div class="app" id="app">
+  <div class="screen s1">
+    <div class="bg-c"></div><div class="bg-c"></div>
+    <div class="s1-hearts">♥ ♥ ♥</div>
+    <h1>Para você,<br><em>${escH(recipient)}</em></h1>
+    <div class="s1-date">12 de junho · dia dos namorados</div>
+    <div class="hint"><span>deslize</span><div class="hint-arr"></div></div>
+  </div>
+  <div class="screen s2">
+    <div class="eyebrow">I · carta de amor</div>
+    <div class="letter">
+      <div class="letter-body">${cartaHTML}</div>
+      <div class="letter-sign">${escH(sender)} ♥</div>
+    </div>
+  </div>
+  <div class="screen s3">
+    <div class="s3-inner">
+      <p class="eyebrow" style="text-align:center;padding-top:36px">II · nossa história</p>
+      <h2>Os momentos que guardo</h2>
+      ${momentsHTML}
+    </div>
+  </div>
+  <div class="screen s4">
+    <div class="eyebrow">III · contagem</div>
+    <h2>Juntos há...</h2>
+    <div class="cd-grid">
+      <div class="cd-box"><div class="cd-num" id="cd-d">0</div><div class="cd-lbl">Dias</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-h">0</div><div class="cd-lbl">Horas</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-m">0</div><div class="cd-lbl">Minutos</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-s">0</div><div class="cd-lbl">Segundos</div></div>
+    </div>
+    <p class="cd-msg">${escH(cdMsg)}</p>
+  </div>
+  <div class="screen s5">
+    <div class="eyebrow">IV · por que te amo</div>
+    <h2>Razões infinitas</h2>
+    <div class="reasons">${reasonsHTML}</div>
+  </div>
+  <div class="screen s6">
+    <div class="game-wrap">
+      <div class="eyebrow">V · joguinho do amor</div>
+      <h2>Descubra a palavra</h2>
+      <p class="game-sub">5 tentativas · 5 letras · tema: amor</p>
+      <div class="gg" id="grid"></div>
+      <div class="gmsg" id="gmsg"></div>
+      <button class="greset" id="greset" onclick="resetGame()">jogar de novo</button>
+      <div class="keyboard" id="kb"></div>
+    </div>
+  </div>
+  <div class="screen s7">
+    <div class="eyebrow">VI · promessas</div>
+    <h2>O que prometo pra você</h2>
+    <div class="promises">${promisesHTML}</div>
+  </div>
+  <div class="screen s8">
+    <div class="bg-c"></div>
+    <div style="position:relative;z-index:1">
+      <span class="s8-heart">♥</span>
+      <h1>Feliz Dia<br><em>dos Namorados</em></h1>
+      <p class="body-txt" style="margin-top:12px">feito com amor · só para você</p>
+      <p class="s8-tag">para sempre</p>
+    </div>
+  </div>
+</div>
+<script>
+const SC=8;const dotsEl=document.getElementById('dots');
+for(let i=0;i<SC;i++){const d=document.createElement('div');d.className='dt'+(i===0?' on':'');d.onclick=()=>document.querySelectorAll('.screen')[i].scrollIntoView({behavior:'smooth'});dotsEl.appendChild(d);}
+const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){const sc=[...document.querySelectorAll('.screen')];const i=sc.indexOf(e.target);document.querySelectorAll('.dt').forEach((d,j)=>d.classList.toggle('on',i===j));}});},{threshold:.5});
+document.querySelectorAll('.screen').forEach(s=>obs.observe(s));
+const ST=new Date('${startDate}T00:00:00');
+function upd(){const n=new Date(),df=Math.max(0,n-ST);document.getElementById('cd-d').textContent=Math.floor(df/86400000);document.getElementById('cd-h').textContent=Math.floor((df%86400000)/3600000);document.getElementById('cd-m').textContent=Math.floor((df%3600000)/60000);document.getElementById('cd-s').textContent=Math.floor((df%60000)/1000);}
+upd();setInterval(upd,1000);
+const WW=['BEIJO','AMADO','JURAS','LACOS','UNIDO','DOCES','ROSAS','SONHO','FELIZ','ETERNO'.slice(0,5)];
+let sec,board,cur,over;
+function initGame(){sec=WW[Math.floor(Math.random()*WW.length)];board=Array.from({length:5},()=>Array(5).fill(''));cur={r:0,c:0};over=false;renderG();renderK();document.getElementById('gmsg').textContent='';document.getElementById('greset').style.display='none';}
+function renderG(){const g=document.getElementById('grid');g.innerHTML='';for(let r=0;r<5;r++){const row=document.createElement('div');row.className='grow';for(let c=0;c<5;c++){const el=document.createElement('div');el.className='gcell';el.id='c'+r+c;el.textContent=board[r][c];if(r<cur.r)el.classList.add(chkRow(r)[c]);row.appendChild(el);}g.appendChild(row);}}
+function chkRow(r){const g=board[r].join(''),res=Array(5).fill('absent'),used=Array(5).fill(false);for(let c=0;c<5;c++)if(g[c]===sec[c]){res[c]='correct';used[c]=true;}for(let c=0;c<5;c++){if(res[c]==='correct')continue;for(let s=0;s<5;s++)if(!used[s]&&g[c]===sec[s]){res[c]='present';used[s]=true;break;}}return res;}
+const KR=[['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['↵','Z','X','C','V','B','N','M','⌫']];
+function renderK(){const kb=document.getElementById('kb');kb.innerHTML='';const st={};for(let r=0;r<cur.r;r++){const res=chkRow(r);for(let c=0;c<5;c++){const l=board[r][c],s=res[c];if(!st[l]||s==='correct'||(s==='present'&&st[l]==='absent'))st[l]=s;}}KR.forEach(row=>{const re=document.createElement('div');re.className='krow';row.forEach(k=>{const b=document.createElement('button');b.className='key'+(k==='↵'||k==='⌫'?' wide':'');b.textContent=k;if(st[k])b.classList.add(st[k]);b.onclick=()=>press(k);re.appendChild(b);});kb.appendChild(re);});}
+function press(k){if(over)return;if(k==='⌫'){if(cur.c>0){cur.c--;board[cur.r][cur.c]='';const el=document.getElementById('c'+cur.r+cur.c);if(el){el.textContent='';el.className='gcell';}}return;}if(k==='↵'){submit();return;}if(cur.c<5){board[cur.r][cur.c]=k;const el=document.getElementById('c'+cur.r+cur.c);if(el){el.textContent=k;el.className='gcell active';setTimeout(()=>el.classList.remove('active'),150);}cur.c++;}}
+function submit(){if(cur.c<5){for(let c=0;c<5;c++){const el=document.getElementById('c'+cur.r+c);if(el){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),400);}}return;}const g=board[cur.r].join(''),res=chkRow(cur.r);for(let c=0;c<5;c++)setTimeout(()=>{const el=document.getElementById('c'+cur.r+c);if(el)el.className='gcell '+res[c];},c*110);setTimeout(()=>{if(g===sec){document.getElementById('gmsg').textContent='Você acertou! ♥';over=true;document.getElementById('greset').style.display='block';}else{cur.r++;cur.c=0;if(cur.r>=5){document.getElementById('gmsg').textContent='Era: '+sec;over=true;document.getElementById('greset').style.display='block';}}renderK();},5*110+180);}
+function resetGame(){initGame();}
+document.addEventListener('keydown',e=>{if(e.key==='Backspace'){press('⌫');return;}if(e.key==='Enter'){press('↵');return;}const l=e.key.toUpperCase();if(/^[A-Z]$/.test(l))press(l);});
+initGame();
+<\/script>
+</body>
+</html>`;
+}
+
+function downloadSite(){
+  const blob=new Blob([generatedHTML],{type:'text/html'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='namorados.html';
+  a.click();
+  closeModal();
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+</script>
+</body>
+</html>
