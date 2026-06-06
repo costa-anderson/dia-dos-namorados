@@ -13,13 +13,6 @@
                 document.documentElement.style.display = 'block';
                 return;
             }
-            const typed = prompt('Por favor, insira a senha para acessar o site: 🔒');
-            if (typed === '052026') {
-                const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?pswd=052026';
-                window.history.replaceState({ path: newUrl }, '', newUrl);
-                document.documentElement.style.display = 'block';
-                return;
-            }
             document.documentElement.innerHTML = `
                 <head>
                     <title>Acesso Protegido 🔒</title>
@@ -46,23 +39,17 @@
                             max-width: 320px;
                             width: 100%;
                         }
-                        button {
-                            background: white;
-                            color: black;
-                            border: none;
-                            padding: 12px 24px;
-                            border-radius: 20px;
-                            font-weight: bold;
-                            cursor: pointer;
-                            margin-top: 20px;
+                        p {
+                            color: #888;
+                            font-size: 1rem;
+                            line-height: 1.6;
                         }
                     </style>
                 </head>
                 <body>
                     <div class="box">
-                        <h1 style="font-size: 2rem; margin-bottom: 15px;">🔒 Acesso Protegido</h1>
-                        <p style="color: #888;">Senha incorreta ou ausente. Por favor, tente novamente.</p>
-                        <button onclick="location.reload()">Inserir Senha</button>
+                        <h1 style="font-size: 2rem; margin-bottom: 15px;">Acesso Negado 🔒</h1>
+                        <p>Esta página é privada. Use o link de acesso correto contendo a senha.</p>
                     </div>
                 </body>
             `;
